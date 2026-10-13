@@ -257,3 +257,7 @@ except Exception as e:
 
 if __name__ == '__main__':
     app.run(debug=False, port=5000)
+    
+print("🔍 DB_PATH =", DB_PATH, flush=True)
+print("🔍 SCHEMA  =", SCHEMA, flush=True)
+print("🔍 exists? ", os.path.exists(SCHEMA), flush=True)
