@@ -21,10 +21,10 @@ CREATE INDEX IF NOT EXISTS idx_books_genre  ON books(genre);
 CREATE INDEX IF NOT EXISTS idx_books_author ON books(author);
 CREATE INDEX IF NOT EXISTS idx_books_year   ON books(year);
 
-INSERT INTO books (title, author, genre, year, rating, pages, description) VALUES
-  ('Мастер и Маргарита', 'М. А. Булгаков', 'classic', 1967, 4.9, 480,
+INSERT OR IGNORE INTO books (id, title, author, genre, year, rating, pages, description) VALUES
+  (1, 'Мастер и Маргарита', 'М. А. Булгаков', 'classic', 1967, 4.9, 480,
    'Роман о добре и зле, любви и трусости.'),
-  ('1984',               'Дж. Оруэлл',      'fantasy', 1949, 4.8, 320,
+  (2, '1984',               'Дж. Оруэлл',      'fantasy', 1949, 4.8, 320,
    'Антиутопия, которая не перестаёт быть актуальной.'),
-  ('Три товарища',       'Э. М. Ремарк',    'drama',   1936, 4.7, 384,
+  (3, 'Три товарища',       'Э. М. Ремарк',    'drama',   1936, 4.7, 384,
    'История дружбы и любви на фоне непростого времени.');
