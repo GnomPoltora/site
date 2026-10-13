@@ -246,5 +246,14 @@ def api_delete_book(book_id):
 
 # -------- Запуск --------
 
+try:
+    init_db()
+    print("✅ База данных инициализирована успешно", flush=True)
+except Exception as e:
+    import traceback
+    print("❌ ОШИБКА при init_db():", e, flush=True)
+    print(traceback.format_exc(), flush=True)
+    raise
+
 if __name__ == '__main__':
-      app.run(debug=False)
+    app.run(debug=False, port=5000)
