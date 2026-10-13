@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block title %}Главная — Домашняя библиотека{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <h1>Добро пожаловать в мою домашнюю библиотеку</h1>
+  <p>Каталог книг хранится в базе данных SQLite и обновляется на сервере.</p>
+  <p id="greeting" class="greeting"></p>
+  <p id="last-visit" class="small muted"></p>
+</section>
+
+<section class="panel">
+  <h2>Статистика библиотеки</h2>
+  <div class="calc-results">
+    <div><span>{{ stats.total }}</span><br><small>книг в базе</small></div>
+    <div><span>{{ '%.2f'|format(stats.avg_rating) }}</span><br><small>средний рейтинг</small></div>
+    <div><span>{{ stats.total_pages }}</span><br><small>страниц всего</small></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Как вас зовут?</h2>
+  <div class="row">
+    <input type="text" id="nameInput" placeholder="Введите имя" maxlength="40">
+    <button class="btn" id="saveNameBtn">Сохранить</button>
+    <button class="btn btn-secondary" id="clearCookiesBtn">Очистить сохранённые данные</button>
+  </div>
+</section>
+
+<section>
+  <h2>Избранные книги</h2>
+  <form method="get" action="{{ url_for('index') }}" class="row filters-form">
+    <label>Жанр:
+      <select name="genre">
+        <option value="all" {% if current_genre == 'all' %}selected{% endif %}>Все</option>
+        {% for g in genres %}
+          <option value="{{ g }}" {% if current_genre == g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Сортировать по:
+      <select name="sort">
+        <option value="title"  {% if current_sort == 'title'  %}selected{% endif %}>названию</option>
+        <option value="author" {% if current_sort == 'author' %}selected{% endif %}>автору</option>
+        <option value="year"   {% if current_sort == 'year'   %}selected{% endif %}>году</option>
+        <option value="rating" {% if current_sort == 'rating' %}selected{% endif %}>рейтингу</option>
+      </select>
+    </label>
+    <label>Порядок:
+      <select name="order">
+        <option value="asc"  {% if current_order == 'asc'  %}selected{% endif %}>возр.</option>
+        <option value="desc" {% if current_order == 'desc' %}selected{% endif %}>убыв.</option>
+      </select>
+    </label>
+    <button class="btn" type="submit">Применить</button>
+  </form>
+
+  <p id="visible-count" class="small muted">Показано книг: {{ books|length }}</p>
+
+  <div class="cards" id="cards">
+    {% for b in books %}
+      <article class="card"
+               data-genre="{{ b.genre }}"
+               data-title="{{ b.title }}"
+               data-img="{{ url_for('static', filename='images/book' ~ b.id ~ '.jpg') }}"
+               data-desc="{{ b.description or '' }}"
+               data-id="{{ b.id }}">
+        <img src="{{ url_for('static', filename='images/book' ~ b.id ~ '.jpg') }}"
+             alt="{{ b.title }}" class="card-img">
+        <h3>{{ b.title }}</h3>
+        <p class="author">{{ b.author }}</p>
+        <p>{{ b.description or '' }}</p>
+        <p class="small muted">{{ b.genre }} · {{ b.year }} · ★ {{ b.rating }} · {{ b.pages }} стр.</p>
+        <button class="btn btn-secondary btn-delete" data-id="{{ b.id }}">Удалить</button>
+      </article>
+    {% else %}
+      <p>В базе пока нет книг.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Добавить книгу</h2>
+  <form id="addBookForm" class="row">
+    <input type="text"   name="title"       placeholder="Название" required>
+    <input type="text"   name="author"      placeholder="Автор"    required>
+    <select name="genre" required>
+      <option value="classic">classic</option>
+      <option value="fantasy">fantasy</option>
+      <option value="drama">drama</option>
+      <option value="science">science</option>
+      <option value="history">history</option>
+      <option value="other">other</option>
+    </select>
+    <input type="number" name="year"    placeholder="Год"     min="1" max="2099">
+    <input type="number" name="rating"  placeholder="Рейтинг" step="0.1" min="0" max="5">
+    <input type="number" name="pages"   placeholder="Страниц" min="0" max="20000">
+    <input type="text"   name="description" placeholder="Описание" class="wide">
+    <button class="btn" type="submit">Добавить</button>
+  </form>
+  <p id="formMessage" class="small"></p>
+</section>
+
+<section class="panel">
+  <h2>Калькулятор чтения</h2>
+  <label for="booksPerMonth">Книг в месяц: <strong id="bpmValue">1</strong></label>
+  <input type="range" id="booksPerMonth" min="1" max="20" value="1">
+  <div class="calc-results">
+    <div><span id="booksPerYear">12</span><br><small>книг в год</small></div>
+    <div><span id="pagesPerYear">3600</span><br><small>страниц в год</small></div>
+    <div><span id="hoursPerYear">60</span><br><small>часов чтения</small></div>
+  </div>
+</section>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose">×</button>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+  </div>
+</div>
+
+{% endblock %}

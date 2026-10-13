@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Об авторе — Домашняя библиотека{% endblock %}
+{% block content %}
+
+<h1>Об авторе</h1>
+
+<section class="about-author">
+  <img src="{{ url_for('static', filename='images/author.jpg') }}"
+       alt="Фотография автора — Сладких Сергей Александрович" class="author-photo">
+  <div class="author-info">
+    <h2>Сладких Сергей Александрович</h2>
+    <p class="role">Студент, книголюб, автор сайта</p>
+    <h3>Краткая автобиография</h3>
+    <p>Родился в 2008 году в городе Липецк. С детства увлекаюсь чтением.</p>
+    <p>Веду читательский дневник, коллекционирую букинистические издания.</p>
+  </div>
+</section>
+
+<section>
+  <h2>О сайте</h2>
+  <p>«Домашняя библиотека» — сайт с полным стеком: HTML/CSS/JS на клиенте, Flask + SQLite на сервере.</p>
+</section>
+
+<section class="panel">
+  <h2>Данные из БД</h2>
+  <p>Всего книг: <strong>{{ stats.total }}</strong><br>
+     Средний рейтинг: <strong>{{ '%.2f'|format(stats.avg_rating) }}</strong><br>
+     Всего визитов: <strong>{{ visits_count }}</strong></p>
+</section>
+
+<section>
+  <h2>Связаться со мной</h2>
+  <p><a href="mailto:sladkih.serj@mail.ru">sladkih.serj@mail.ru</a></p>
+  <p><a class="btn" href="mailto:sladkih.serj@mail.ru">✉ Написать письмо</a></p>
+</section>
+
+<section>
+  <h2>Полезные внешние ресурсы</h2>
+  <ul class="links">
+    <li><a href="https://www.livelib.ru/" target="_blank" rel="noopener">LiveLib</a></li>
+    <li><a href="https://ru.wikipedia.org/" target="_blank" rel="noopener">Википедия</a></li>
+  </ul>
+</section>
+
+{% endblock %}

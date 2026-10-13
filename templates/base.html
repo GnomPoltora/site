@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Домашняя библиотека{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="{{ url_for('index') }}" class="logo">📚 Домашняя библиотека</a>
+    <nav class="nav">
+      <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Главная</a>
+      <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">Об авторе</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 Домашняя библиотека. Автор: Сладких Сергей Александрович.</p>
+    <p class="small">Сервер: Flask + SQLite. Визитов в БД: {{ visits_count if visits_count is defined else '—' }}</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
